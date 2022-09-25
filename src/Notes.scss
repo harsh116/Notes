@@ -1,6 +1,12 @@
 @import "config";
 
 .Notes {
+  .emptyMessage {
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
   .deleteCross {
     position: absolute;
     top: 0;

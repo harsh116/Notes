@@ -56,7 +56,15 @@ const Notes = (props) => {
     );
   });
 
-  return <div className="Notes">{noteArray}</div>;
+  const emptyNoteMessage = () => {
+    return <div className="emptyMessage">No notes here</div>;
+  };
+
+  return (
+    <div className="Notes">
+      {noteArray && noteArray.length > 0 ? noteArray : emptyNoteMessage()}
+    </div>
+  );
 };
 
 export default Notes;
