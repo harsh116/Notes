@@ -1,0 +1,34 @@
+@import "config";
+
+html,
+body,
+.root,
+.App {
+  height: 100%;
+}
+
+body {
+  background-color: $greyshade;
+}
+
+.App {
+  .addNew {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    background-color: $amber;
+    width: 50px;
+    aspect-ratio: 1/1;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+
+    &:hover {
+      background-color: lighten($amber, 10%);
+    }
+  }
+}
