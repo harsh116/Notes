@@ -6,24 +6,6 @@ import Editor from "./Editor";
 import Search from "./Search";
 
 function App() {
-  // const [notes, setNotes] = useState([
-  //   {
-  //     id: 7687,
-  //     fmtext: "We good",
-  //     rawtext: "We good",
-  //   },
-
-  //   {
-  //     id: 7688,
-  //     fmtext: "We good",
-  //     rawtext: "We good",
-  //   },
-  //   {
-  //     id: 7689,
-  //     fmtext: "We good",
-  //     rawtext: "We good",
-  //   },
-  // ]);
   const [notes, setNotes] = useState([]);
   const [searchedNotes, setSearchedNotes] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
