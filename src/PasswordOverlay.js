@@ -21,7 +21,7 @@ const PasswordOverlay = (props) => {
       <div className="passwordBox">
         <div className="passwordSection">
           <label>Password: </label>
-          <input type="text" onChange={handleChange} />
+          <input autoFocus={true} type="text" onChange={handleChange} />
         </div>
         {encryptionState === "encrypt" ? (
           <div className="passwordNote">
