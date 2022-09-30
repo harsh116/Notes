@@ -45,6 +45,7 @@ function App() {
     const obj = {
       id: idgenerate,
       fmText: "",
+      isEncrypted: false,
     };
 
     setEditingNote(obj);

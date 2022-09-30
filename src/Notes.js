@@ -21,6 +21,7 @@ const Note = (props) => {
     const obj = {
       id: note.id,
       fmtext: note.fmtext,
+      isEncrypted: note.isEncrypted,
     };
     setEditingNote(obj);
   };
