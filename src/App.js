@@ -9,6 +9,7 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [searchedNotes, setSearchedNotes] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("light");
 
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [editingNote, setEditingNote] = useState({});
@@ -18,6 +19,25 @@ function App() {
     const pos = updatedNotes.findIndex((ele) => ele.id === id);
     updatedNotes.splice(pos, 1);
     setNotes(updatedNotes);
+  };
+
+  const invertColors = (theme) => {
+    const invertPercent = theme === "dark" ? 100 : 0;
+    const css = `html {
+      -webkit-filter: invert(${invertPercent}%);
+      -moz-filter: invert(${invertPercent}%);
+      -o-filter: invert(${invertPercent}%);
+      -ms-filter: invert(${invertPercent}%);
+    }`;
+    const head = document.head;
+    const style = document.createElement("style");
+    style.type = "text/css";
+    if (style.styleSheet) {
+      style.styleSheet.cssText = css;
+    } else {
+      style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
   };
 
   useEffect(() => {
@@ -32,6 +52,8 @@ function App() {
     } else {
       localStorage.setItem("noteID", "0");
     }
+
+    // invertColors();
   }, []);
 
   useEffect(() => {
@@ -40,12 +62,23 @@ function App() {
     console.log("notes: ", notes);
   }, [notes]);
 
+  const toggleTheme = () => {
+    if (currentTheme === "light") {
+      setCurrentTheme("dark");
+      invertColors("dark");
+    } else {
+      setCurrentTheme("light");
+      invertColors("light");
+    }
+  };
+
   const openNewNote = () => {
     setIsEditorActive(true);
     const obj = {
       id: idgenerate,
-      fmText: "",
+      fmtext: "",
       isEncrypted: false,
+      title: "Untitled",
     };
 
     setEditingNote(obj);
@@ -69,6 +102,13 @@ function App() {
       <button onClick={openNewNote} className="addNew">
         {"\u002B"}
       </button>
+      <button onClick={toggleTheme} className="toggleTheme">
+        <i
+          class={`fa fa-${currentTheme === "light" ? "sun" : "moon"}-o`}
+          aria-hidden="true"
+        ></i>
+      </button>
+
       <Editor
         editingNote={editingNote}
         setEditingNote={setEditingNote}

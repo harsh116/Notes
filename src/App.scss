@@ -13,7 +13,8 @@ body {
 }
 
 .App {
-  .addNew {
+  .addNew,
+  .toggleTheme {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
@@ -30,6 +31,18 @@ body {
 
     &:hover {
       background-color: lighten($amber, 10%);
+    }
+  }
+
+  .toggleTheme {
+    right: 6rem;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+
+    &:hover {
+      background-color: transparent;
+      border: 3px solid black;
     }
   }
 }

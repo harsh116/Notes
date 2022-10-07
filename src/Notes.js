@@ -22,6 +22,7 @@ const Note = (props) => {
       id: note.id,
       fmtext: note.fmtext,
       isEncrypted: note.isEncrypted,
+      title: note.title,
     };
     setEditingNote(obj);
   };
@@ -37,7 +38,8 @@ const Note = (props) => {
       >
         {"\u00D7"}
       </button>
-      {ReactHtmlParser(note.fmtext)}
+      <div className="titleSection">{note.title}</div>
+      <div className="noteSection">{ReactHtmlParser(note.fmtext)}</div>
     </div>
   );
 };

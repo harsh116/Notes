@@ -9,8 +9,8 @@
 
   .deleteCross {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -0.2rem;
+    right: -0.2rem;
 
     background-color: transparent;
     border: none;
@@ -31,6 +31,7 @@
     width: 150px;
     max-height: 100px;
     padding: 0.8rem;
+    padding-top: 0;
     background-color: white;
     margin: 0.5rem;
     cursor: pointer;
@@ -38,5 +39,14 @@
     overflow: hidden;
     white-space: pre-wrap;
     position: relative;
+
+    .titleSection {
+      background-color: rgb(240, 240, 240);
+      font-size: 0.8rem;
+      width: fit-content;
+      height: 1rem;
+      overflow: hidden;
+      font-weight: bold;
+    }
   }
 }

@@ -3,7 +3,7 @@ import "./PasswordOverlay.scss";
 
 const PasswordOverlay = (props) => {
   const [pass, setPass] = useState("");
-  const { Encrypting, setIsoverlayActive, encryptionState } = props;
+  const { onSave, setIsoverlayActive, passwordNote, label } = props;
 
   const handleChange = (e) => {
     setPass(e.target.value);
@@ -13,27 +13,18 @@ const PasswordOverlay = (props) => {
     if (pass.length === 0) {
       return;
     }
-    Encrypting(pass);
+    onSave(pass);
+    setPass("");
   };
 
   return (
     <div className="PasswordOverlay">
       <div className="passwordBox">
         <div className="passwordSection">
-          <label>Password: </label>
+          <label>{`${label}: `} </label>
           <input autoFocus={true} type="text" onChange={handleChange} />
         </div>
-        {encryptionState === "encrypt" ? (
-          <div className="passwordNote">
-            <span>Note: </span> Make sure to remember the password. Only this
-            password will be able to decrypt the current note.
-          </div>
-        ) : (
-          <div className="passwordNote">
-            Type the password which you have used to encrypt this before to
-            decrypt it.
-          </div>
-        )}
+        {passwordNote}
         <div className="passwordButtons">
           <button onClick={passwordSelect} className="select">
             {"OK \u2713"}
@@ -41,6 +32,7 @@ const PasswordOverlay = (props) => {
           <button
             onClick={() => {
               setIsoverlayActive(false);
+              setPass("");
             }}
             className="close"
           >

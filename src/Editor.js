@@ -11,6 +11,9 @@ const Editor = (props) => {
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
   const [isoverlayActive, setIsoverlayActive] = useState(false);
 
+  // password, title
+  const [overlayType, setOverlayType] = useState("");
+
   const {
     setIsEditorActive,
     isEditorActive,
@@ -54,6 +57,15 @@ const Editor = (props) => {
         fmtext: value,
         rawtext: str,
         isEncrypted: encState === "decrypt",
+        title: editingNote.title,
+      };
+    } else if (state === "assignTitle") {
+      obj = {
+        id: editingNote.id,
+        fmtext: editingNote.fmtext,
+        rawtext: editingNote.rawtext,
+        isEncrypted: encState === "decrypt",
+        title: value,
       };
     } else {
       str = editingNote.fmtext.split(patt).join(" ");
@@ -62,6 +74,7 @@ const Editor = (props) => {
         fmtext: editingNote.fmtext,
         rawtext: str,
         isEncrypted: encState === "decrypt",
+        title: editingNote.title,
       };
     }
 
@@ -74,10 +87,22 @@ const Editor = (props) => {
     setNotes(updatedNotes);
   };
 
+  const assignTitle = (title) => {
+    if (title.length > 100) {
+      alert("Title is too long");
+      return;
+    }
+    setIsoverlayActive(false);
+    setEditingNote({ ...editingNote, title: title });
+    save("assignTitle", title);
+  };
+
   const Encrypt = () => {
     if (editingNote.fmtext.length === 0) {
       alert("Type something first");
+      return;
     }
+    setOverlayType("password");
     setIsoverlayActive(true);
   };
 
@@ -126,22 +151,68 @@ const Editor = (props) => {
     deleteNote(editingNote.id);
   };
 
+  const passwordNote = () => {
+    if (overlayType === "password") {
+      return encryptionState === "encrypt" ? (
+        <div className="passwordNote">
+          <span>Note: </span> Make sure to remember the password. Only this
+          password will be able to decrypt the current note.
+        </div>
+      ) : (
+        <div className="passwordNote">
+          Type the password which you have used to encrypt this before to
+          decrypt it.
+        </div>
+      );
+    } else if (overlayType === "title") {
+      return (
+        <div className="passwordNote">
+          Assign the current note a name or title to help to identify a note
+          when its encrypted.
+        </div>
+      );
+    } else {
+      return <div className="passwordNote"></div>;
+    }
+  };
+
+  const heading = editingNote.title ? editingNote.title : "Untitled";
+
   return (
     <div className={`EditorContainer ${isEditorActive ? "active" : ""}`}>
       <div className={`Editor ${isEditorActive ? "active" : ""}`}>
         {isoverlayActive ? (
           <PasswordOverlay
-            encryptionState={encryptionState}
-            Encrypting={Encrypting}
+            label={overlayType === "password" ? "Password" : "Title"}
+            passwordNote={passwordNote()}
+            onSave={overlayType === "password" ? Encrypting : assignTitle}
             setIsoverlayActive={setIsoverlayActive}
           />
         ) : (
           ""
         )}
         <header className="options">
-          <button title="Close current note" onClick={close} className="close">
-            {"\u00D7"}
-          </button>
+          <div className="leftButtons">
+            <button
+              title="Close current note"
+              onClick={close}
+              className="close"
+            >
+              {"\u00D7"}
+            </button>
+            <div className="title">
+              <span title={heading}>{heading}</span>
+              <button
+                onClick={() => {
+                  setOverlayType("title");
+                  setIsoverlayActive(true);
+                }}
+                className="editTitle"
+              >
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
           <div className="rightButtons">
             <button
               title={`Current note is in ${
@@ -173,6 +244,7 @@ const Editor = (props) => {
             </button>
           </div>
         </header>
+        <div className="titleBar">{heading}</div>
         <div className="article">
           <ContentEditable
             className="edit"
