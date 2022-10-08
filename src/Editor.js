@@ -44,7 +44,8 @@ const Editor = (props) => {
 
   const save = (state = "null", value = "", encState = "") => {
     // debugger;
-    const patt = /<\/*[a-z]+>/g;
+    // const patt = /<\/*[a-z]+>/g;
+    const patt = /<\/*[^>]+>/g;
     let str;
     let obj;
     const updatedNotes = [...notes];
@@ -69,6 +70,7 @@ const Editor = (props) => {
       };
     } else {
       str = editingNote.fmtext.split(patt).join(" ");
+      console.log("rawstring: ", str);
       obj = {
         id: editingNote.id,
         fmtext: editingNote.fmtext,
@@ -108,6 +110,7 @@ const Editor = (props) => {
 
   const Encrypting = (pass) => {
     const str = editingNote.fmtext;
+    // debugger;
     console.log("editingnote: ", str);
     let value;
     let encState;
@@ -177,6 +180,12 @@ const Editor = (props) => {
   };
 
   const heading = editingNote.title ? editingNote.title : "Untitled";
+  const editHTML =
+    encryptionState === "decrypt"
+      ? "Locked"
+      : editingNote.fmtext
+      ? editingNote.fmtext
+      : "";
 
   return (
     <div className={`EditorContainer ${isEditorActive ? "active" : ""}`}>
@@ -248,7 +257,7 @@ const Editor = (props) => {
         <div className="article">
           <ContentEditable
             className="edit"
-            html={editingNote.fmtext ? editingNote.fmtext : ""}
+            html={editHTML}
             innerRef={ref}
             onChange={handleChange}
           />

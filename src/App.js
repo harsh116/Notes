@@ -28,7 +28,16 @@ function App() {
       -moz-filter: invert(${invertPercent}%);
       -o-filter: invert(${invertPercent}%);
       -ms-filter: invert(${invertPercent}%);
-    }`;
+    }
+
+    html img,video,iframe{
+      -webkit-filter: invert(${invertPercent}%);
+      -moz-filter: invert(${invertPercent}%);
+      -o-filter: invert(${invertPercent}%);
+      -ms-filter: invert(${invertPercent}%);
+    }
+    
+    `;
     const head = document.head;
     const style = document.createElement("style");
     style.type = "text/css";
