@@ -38,8 +38,11 @@ const Editor = (props) => {
   };
 
   const decrypt = (texto, pass) => {
+    // debugger;
     const decrypted = CryptoJS.AES.decrypt(texto, pass);
-    return decrypted.toString(CryptoJS.enc.Utf8);
+    const res = decrypted.toString(CryptoJS.enc.Utf8);
+    // debugger;
+    return res;
   };
 
   const save = (state = "null", value = "", encState = "") => {
@@ -122,6 +125,7 @@ const Editor = (props) => {
       setEditingNote({ ...editingNote, fmtext: encryptedText });
     } else {
       const decryptedText = decrypt(str, pass);
+      debugger;
       if (decryptedText.length === 0) {
         alert("Wrong Password.Try again");
 
