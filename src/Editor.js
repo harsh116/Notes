@@ -222,7 +222,8 @@ const Editor = (props) => {
                 }}
                 className="editTitle"
               >
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {/* <i class="fa fa-pencil-square-o" aria-hidden="true"></i> */}
+                <i class="fa-solid fa-pencil"></i>
               </button>
             </div>
           </div>

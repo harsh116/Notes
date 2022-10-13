@@ -113,7 +113,7 @@ function App() {
       </button>
       <button onClick={toggleTheme} className="toggleTheme">
         <i
-          class={`fa fa-${currentTheme === "light" ? "sun" : "moon"}-o`}
+          class={`fa-solid fa-${currentTheme === "light" ? "sun" : "moon"}`}
           aria-hidden="true"
         ></i>
       </button>
