@@ -4,7 +4,9 @@ import "./App.scss";
 import Notes from "./Notes";
 import Editor from "./Editor";
 import Search from "./Search";
+import PasswordOverlay from "./PasswordOverlay";
 import { generate_token } from "./helper";
+import { SOURCE, SINGLE_SOURCE } from "./constants";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -15,6 +17,9 @@ function App() {
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [editingNote, setEditingNote] = useState({});
   const [idgenerate, setIdgenerate] = useState(0);
+
+  const [isImportSingleNoteActive, setIsImportSingleNoteActive] =
+    useState(false);
 
   const deleteNote = (id) => {
     const updatedNotes = [...notes];
@@ -116,6 +121,32 @@ function App() {
     localStorage.setItem("noteID", (idgenerate + 1).toString());
   };
 
+  const importSingle = (file) => {
+    console.log("import_single: ", file);
+    const fr = new FileReader();
+    fr.onload = () => {
+      const obj = JSON.parse(fr.result);
+      console.log("importedFile: ", obj);
+      if (!obj.source || obj.source !== SINGLE_SOURCE) {
+        alert("Wrong file");
+        return;
+      }
+
+      const objNote = { ...obj.singleNote, id: idgenerate };
+
+      const tempNotes = [...notes, objNote];
+      setNotes(tempNotes);
+
+      setIdgenerate(idgenerate + 1);
+      localStorage.setItem("noteID", (idgenerate + 1).toString());
+    };
+
+    if (file) fr.readAsText(file);
+    setIsImportSingleNoteActive(false);
+  };
+
+  const importSingleNote = "Import the json file of a note to be imported";
+
   return (
     <div className="App">
       <Search
@@ -129,10 +160,28 @@ function App() {
         setEditingNote={setEditingNote}
         deleteNote={deleteNote}
       />
+      {isImportSingleNoteActive ? (
+        <PasswordOverlay
+          isInputJSON={true}
+          onSave={importSingle}
+          setIsoverlayActive={setIsImportSingleNoteActive}
+          passwordNote={importSingleNote}
+          label="Upload file"
+        />
+      ) : (
+        ""
+      )}
+
       <button title="Export notes" className="exportAll" onClick={exp}>
         <i className="fa-solid fa-file-export"></i>
       </button>
-      <button title="Import single note" className="importSingle">
+      <button
+        onClick={() => {
+          setIsImportSingleNoteActive(true);
+        }}
+        title="Import single note"
+        className="importSingle"
+      >
         <i class="fa-solid fa-upload"></i>
       </button>
 

@@ -72,6 +72,10 @@ const Editor = (props) => {
     let pos = updatedNotes.findIndex((ele) => ele.id === editingNote.id);
     if (state === "encrypt") {
       str = "";
+      if (encState === "encrypt") {
+        str = value.split(patt).join(" ");
+        str = str.replace(/&nbsp;/g, " ");
+      }
       obj = {
         id: editingNote.id,
         fmtext: value,
@@ -89,6 +93,7 @@ const Editor = (props) => {
       };
     } else {
       str = editingNote.fmtext.split(patt).join(" ");
+      str = str.replace(/&nbsp;/g, " ");
       console.log("rawstring: ", str);
       obj = {
         id: editingNote.id,
@@ -141,7 +146,7 @@ const Editor = (props) => {
       setEditingNote({ ...editingNote, fmtext: encryptedText });
     } else {
       const decryptedText = decrypt(str, pass);
-      debugger;
+      // debugger;
       if (decryptedText.length === 0) {
         alert("Wrong Password.Try again");
 

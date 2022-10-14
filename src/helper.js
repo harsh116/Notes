@@ -11,6 +11,7 @@ export function generate_token(length) {
 }
 
 export const improvedSearch = (str, searchedWord) => {
+  //   console.time();
   //   debugger;
   // const str="He is a boy. This can be difficult. He can understand    this boy. This is it"
   let lis = str.split(/\s+/);
@@ -19,6 +20,7 @@ export const improvedSearch = (str, searchedWord) => {
   const searchedWordLis = searchedWord.split(/\s+/);
 
   let n = lis.length;
+
   let kn = searchedWordLis.length;
   let i = 0;
   for (let word of lis) {
@@ -56,6 +58,8 @@ export const improvedSearch = (str, searchedWord) => {
     }
     i++;
   }
+
+  //   console.timeEnd();
   return false;
 };
 

@@ -19,9 +19,11 @@ const Search = (props) => {
 
     let sNotes = notes.filter(
       (note) =>
-        improvedSearch(note?.title, searchValue) ||
+        (note?.title !== "Untitled" &&
+          improvedSearch(note?.title, searchValue)) ||
         improvedSearch(note?.rawtext, searchValue)
     );
+
     setIsSearching(true);
     setSearchedNotes(sNotes);
     return;
