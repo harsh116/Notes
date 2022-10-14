@@ -39,7 +39,8 @@ const Note = (props) => {
         {"\u00D7"}
       </button>
       <div className="titleSection">{note.title}</div>
-      <div className="noteSection">{ReactHtmlParser(note.fmtext)}</div>
+      {/* <div className="noteSection">{ReactHtmlParser(note.fmtext)}</div> */}
+      <div className="noteSection">{note.rawtext}</div>
     </div>
   );
 };

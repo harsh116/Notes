@@ -4,6 +4,7 @@ import "./App.scss";
 import Notes from "./Notes";
 import Editor from "./Editor";
 import Search from "./Search";
+import { generate_token } from "./helper";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -14,11 +15,26 @@ function App() {
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [editingNote, setEditingNote] = useState({});
   const [idgenerate, setIdgenerate] = useState(0);
+
   const deleteNote = (id) => {
     const updatedNotes = [...notes];
     const pos = updatedNotes.findIndex((ele) => ele.id === id);
     updatedNotes.splice(pos, 1);
     setNotes(updatedNotes);
+  };
+
+  const exp = () => {
+    console.log("exportall");
+    const noteID = localStorage.getItem("noteID");
+    const source = localStorage.getItem("source");
+    const arrString = JSON.stringify({ noteID, source, notes });
+    // console.log(arrString);
+    const blob = new Blob([arrString], { type: "text/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "export.json";
+    link.href = url;
+    link.click();
   };
 
   const invertColors = (theme) => {
@@ -60,6 +76,11 @@ function App() {
       setIdgenerate(Number(currId));
     } else {
       localStorage.setItem("noteID", "0");
+    }
+
+    let source = localStorage.getItem("source");
+    if (!source) {
+      localStorage.setItem("source", "formattedNotes");
     }
 
     // invertColors();
@@ -108,6 +129,9 @@ function App() {
         setEditingNote={setEditingNote}
         deleteNote={deleteNote}
       />
+      <button title="Export notes" className="exportAll" onClick={exp}>
+        <i className="fa-solid fa-file-export"></i>
+      </button>
       <button onClick={openNewNote} className="addNew">
         {"\u002B"}
       </button>

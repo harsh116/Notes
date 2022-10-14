@@ -5,14 +5,21 @@ import ContentEditable from "react-contenteditable";
 import CryptoJS from "crypto-js";
 
 import PasswordOverlay from "./PasswordOverlay";
+import ExpandedOptions from "./ExpandedOptions";
 
 const Editor = (props) => {
   const ref = useRef();
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
   const [isoverlayActive, setIsoverlayActive] = useState(false);
+  const [expandedOptionsVisibilityState, setExpandedOptionsVisibilityState] =
+    useState(false);
 
   // password, title
   const [overlayType, setOverlayType] = useState("");
+
+  const toggleExpandVisibilityState = () => {
+    setExpandedOptionsVisibilityState(!expandedOptionsVisibilityState);
+  };
 
   const {
     setIsEditorActive,
@@ -31,6 +38,12 @@ const Editor = (props) => {
       setEncryptionState(editingNote.isEncrypted ? "decrypt" : "encrypt");
     }
   }, [editingNote.isEncrypted]);
+
+  useEffect(() => {
+    if (!isEditorActive) {
+      setExpandedOptionsVisibilityState(false);
+    }
+  }, [isEditorActive]);
 
   const encrypt = (texto, pass) => {
     const encrypted = CryptoJS.AES.encrypt(texto, pass);
@@ -114,7 +127,7 @@ const Editor = (props) => {
   const Encrypting = (pass) => {
     const str = editingNote.fmtext;
     // debugger;
-    console.log("editingnote: ", str);
+    // console.log("editingnote: ", str);
     let value;
     let encState;
     if (encryptionState === "encrypt") {
@@ -182,6 +195,25 @@ const Editor = (props) => {
       return <div className="passwordNote"></div>;
     }
   };
+
+  const exp = () => {
+    console.log("exportEach");
+    // const noteID = localStorage.getItem("noteID");
+    // const source = localStorage.getItem("source");
+    // const arrString = JSON.stringify({ notes, noteID, source });
+    // console.log(arrString);
+    // const blob = new Blob([arrString], { type: "text/json" });
+    // const url = URL.createObjectURL(blob);
+    // const link = document.createElement("a");
+    // link.download = "export.json";
+    // link.href = url;
+    // link.click();
+  };
+
+  const optionarr = [
+    { icon: "fa fa-trash", name: "Delete", onclickEvent: deleteFn },
+    { icon: "fa-solid fa-file-export", name: "Export", onclickEvent: exp },
+  ];
 
   const heading = editingNote.title ? editingNote.title : "Untitled";
   const editHTML =
@@ -256,6 +288,13 @@ const Editor = (props) => {
             >
               {"\u2713"}
             </button>
+            <button
+              onClick={toggleExpandVisibilityState}
+              title="Expand more options"
+              className={`threedots`}
+            >
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
           </div>
         </header>
         <div className="titleBar">{heading}</div>
@@ -267,6 +306,10 @@ const Editor = (props) => {
             onChange={handleChange}
           />
         </div>
+        <ExpandedOptions
+          state={expandedOptionsVisibilityState}
+          options={optionarr}
+        />
       </div>
     </div>
   );
