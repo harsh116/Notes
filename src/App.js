@@ -20,6 +20,7 @@ function App() {
 
   const [isImportSingleNoteActive, setIsImportSingleNoteActive] =
     useState(false);
+  const [isImportAllNoteActive, setIsImportAllNoteActive] = useState(false);
 
   const deleteNote = (id) => {
     const updatedNotes = [...notes];
@@ -145,7 +146,30 @@ function App() {
     setIsImportSingleNoteActive(false);
   };
 
+  const importAll = (file) => {
+    console.log("import_all: ", file);
+    const fr = new FileReader();
+    fr.onload = () => {
+      const obj = JSON.parse(fr.result);
+      console.log("importedFile: ", obj);
+      if (!obj.source || obj.source !== SOURCE) {
+        alert("Wrong file");
+        return;
+      }
+
+      // const objNote = { ...obj.singleNote, id: idgenerate };
+
+      const tempNotes = [...obj.notes];
+      setNotes(tempNotes);
+      localStorage.setItem("noteID", obj.noteID);
+    };
+
+    if (file) fr.readAsText(file);
+    setIsImportSingleNoteActive(false);
+  };
+
   const importSingleNote = "Import the json file of a note to be imported";
+  const importAllNote = "Import the json file containing whole workspace";
 
   return (
     <div className="App">
@@ -171,6 +195,17 @@ function App() {
       ) : (
         ""
       )}
+      {isImportAllNoteActive ? (
+        <PasswordOverlay
+          isInputJSON={true}
+          onSave={importAll}
+          setIsoverlayActive={setIsImportAllNoteActive}
+          passwordNote={importAllNote}
+          label="Upload file"
+        />
+      ) : (
+        ""
+      )}
 
       <button title="Export notes" className="exportAll" onClick={exp}>
         <i className="fa-solid fa-file-export"></i>
@@ -185,7 +220,13 @@ function App() {
         <i class="fa-solid fa-upload"></i>
       </button>
 
-      <button title="Import all notes" className="importAll">
+      <button
+        onClick={() => {
+          setIsImportAllNoteActive(true);
+        }}
+        title="Import all notes"
+        className="importAll"
+      >
         <i class="fa-solid fa-file-import"></i>
       </button>
 
