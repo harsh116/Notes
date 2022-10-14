@@ -132,6 +132,14 @@ function App() {
       <button title="Export notes" className="exportAll" onClick={exp}>
         <i className="fa-solid fa-file-export"></i>
       </button>
+      <button title="Import single note" className="importSingle">
+        <i class="fa-solid fa-upload"></i>
+      </button>
+
+      <button title="Import all notes" className="importAll">
+        <i class="fa-solid fa-file-import"></i>
+      </button>
+
       <button onClick={openNewNote} className="addNew">
         {"\u002B"}
       </button>

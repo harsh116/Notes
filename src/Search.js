@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Search.scss";
+import { improvedSearch } from "./helper";
 
 const Search = (props) => {
   const { setIsSearching, notes, setSearchedNotes } = props;
@@ -28,6 +29,9 @@ const Search = (props) => {
     let searchednotes = [];
     for (let note of notes) {
       let text = note.rawtext;
+      const title = note.title;
+      if (title === "Untitled") {
+      }
       let words = text.split(" ");
 
       const len = searchValue.length;

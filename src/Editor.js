@@ -7,6 +7,9 @@ import CryptoJS from "crypto-js";
 import PasswordOverlay from "./PasswordOverlay";
 import ExpandedOptions from "./ExpandedOptions";
 
+import { SOURCE, SINGLE_SOURCE } from "./constants";
+import { findNote } from "./helper";
+
 const Editor = (props) => {
   const ref = useRef();
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -198,16 +201,21 @@ const Editor = (props) => {
 
   const exp = () => {
     console.log("exportEach");
-    // const noteID = localStorage.getItem("noteID");
-    // const source = localStorage.getItem("source");
-    // const arrString = JSON.stringify({ notes, noteID, source });
+    const source = SINGLE_SOURCE;
+    const singleNote = findNote(editingNote, notes);
+    if (!singleNote) {
+      alert("Make sure to save the current note first");
+      return;
+    }
+    const arrString = JSON.stringify({ source, singleNote });
     // console.log(arrString);
-    // const blob = new Blob([arrString], { type: "text/json" });
-    // const url = URL.createObjectURL(blob);
-    // const link = document.createElement("a");
-    // link.download = "export.json";
-    // link.href = url;
-    // link.click();
+    const blob = new Blob([arrString], { type: "text/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = `exportNote${singleNote.id}.json`;
+    link.href = url;
+    link.click();
+    setExpandedOptionsVisibilityState(false);
   };
 
   const optionarr = [
@@ -274,13 +282,7 @@ const Editor = (props) => {
                 aria-hidden="true"
               ></i>
             </button>
-            <button
-              title="Delete the current note"
-              onClick={deleteFn}
-              className="deleteBtn"
-            >
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </button>
+
             <button
               title="Save current note"
               onClick={isSaveEnabled ? save : null}

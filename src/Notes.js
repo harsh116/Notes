@@ -1,18 +1,6 @@
 import "./Notes.scss";
-import ReactHtmlParser from "react-html-parser";
-
-function generate_token(length) {
-  //edit the token allowed characters
-  const a =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-  const b = [];
-  for (let i = 0; i < length; i++) {
-    let j = (Math.random() * (a.length - 1)).toFixed(0);
-    b[i] = a[j];
-  }
-  return b.join("");
-}
-
+// import ReactHtmlParser from "react-html-parser";
+import { generate_token } from "./helper";
 const Note = (props) => {
   const { note, setIsEditorActive, setEditingNote, deleteNote } = props;
 

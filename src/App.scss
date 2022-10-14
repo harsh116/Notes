@@ -46,7 +46,9 @@ body {
     }
   }
 
-  .exportAll {
+  .exportAll,
+  .importSingle,
+  .importAll {
     position: absolute;
     top: 0;
     right: 0;
@@ -64,5 +66,12 @@ body {
     &:hover {
       color: blue;
     }
+  }
+
+  .importSingle {
+    right: 3rem;
+  }
+  .importAll {
+    right: 6rem;
   }
 }
