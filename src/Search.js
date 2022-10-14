@@ -17,14 +17,14 @@ const Search = (props) => {
       return;
     }
 
-    if (searchValue.includes(" ")) {
-      let sNotes = notes.filter((note) =>
-        note?.rawtext.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setIsSearching(true);
-      setSearchedNotes(sNotes);
-      return;
-    }
+    let sNotes = notes.filter(
+      (note) =>
+        improvedSearch(note?.title, searchValue) ||
+        improvedSearch(note?.rawtext, searchValue)
+    );
+    setIsSearching(true);
+    setSearchedNotes(sNotes);
+    return;
 
     let searchednotes = [];
     for (let note of notes) {

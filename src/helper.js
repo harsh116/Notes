@@ -11,6 +11,7 @@ export function generate_token(length) {
 }
 
 export const improvedSearch = (str, searchedWord) => {
+  //   debugger;
   // const str="He is a boy. This can be difficult. He can understand    this boy. This is it"
   let lis = str.split(/\s+/);
   // const searchedWord="this boy"
@@ -21,7 +22,12 @@ export const improvedSearch = (str, searchedWord) => {
   let kn = searchedWordLis.length;
   let i = 0;
   for (let word of lis) {
-    if (searchedWordLis[0].toLowerCase() === word.toLowerCase()) {
+    if (
+      searchedWordLis[0].toLowerCase() === word.toLowerCase() ||
+      (kn === 1 &&
+        searchedWordLis[0].toLowerCase() ===
+          word.substr(0, searchedWordLis[0].length).toLowerCase())
+    ) {
       console.log("true");
       let k = 0;
       let i2 = i;
