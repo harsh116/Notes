@@ -73,6 +73,11 @@ const Editor = (props) => {
     if (state === "encrypt") {
       str = "";
       if (encState === "encrypt") {
+        if (value === undefined) {
+          console.log("some err");
+          return;
+        }
+
         str = value.split(patt).join(" ");
         str = str.replace(/&nbsp;/g, " ");
       }

@@ -2,12 +2,13 @@
 
 html,
 body,
-.root,
+#root,
 .App {
   height: 100%;
 }
 
-body {
+body,
+.App {
   background-color: $greyshade;
   // margin: 1px;
 }

@@ -45,14 +45,15 @@ function App() {
 
   const invertColors = (theme) => {
     const invertPercent = theme === "dark" ? 100 : 0;
-    const css = `html {
+    const css = `.App {
       -webkit-filter: invert(${invertPercent}%);
       -moz-filter: invert(${invertPercent}%);
       -o-filter: invert(${invertPercent}%);
       -ms-filter: invert(${invertPercent}%);
     }
 
-    html img,video,iframe{
+    
+    img,video,iframe{
       -webkit-filter: invert(${invertPercent}%);
       -moz-filter: invert(${invertPercent}%);
       -o-filter: invert(${invertPercent}%);
