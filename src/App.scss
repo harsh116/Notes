@@ -2,18 +2,20 @@
 
 html,
 body,
-.root,
+#root,
 .App {
   height: 100%;
 }
 
-body {
+body,
+.App {
   background-color: $greyshade;
   // margin: 1px;
 }
 
 .App {
-  .addNew {
+  .addNew,
+  .toggleTheme {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
@@ -31,5 +33,46 @@ body {
     &:hover {
       background-color: lighten($amber, 10%);
     }
+  }
+
+  .toggleTheme {
+    right: 6rem;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+
+    &:hover {
+      background-color: transparent;
+      border: 3px solid black;
+    }
+  }
+
+  .exportAll,
+  .importSingle,
+  .importAll {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    margin: 0 0.4rem;
+    background-color: rgb(250, 250, 250, 0.4);
+
+    border: none;
+    padding: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: black;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      color: blue;
+    }
+  }
+
+  .importSingle {
+    right: 3rem;
+  }
+  .importAll {
+    right: 6rem;
   }
 }

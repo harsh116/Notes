@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Search.scss";
+import { improvedSearch } from "./helper";
 
 const Search = (props) => {
   const { setIsSearching, notes, setSearchedNotes } = props;
@@ -16,18 +17,23 @@ const Search = (props) => {
       return;
     }
 
-    if (searchValue.includes(" ")) {
-      let sNotes = notes.filter((note) =>
-        note?.rawtext.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setIsSearching(true);
-      setSearchedNotes(sNotes);
-      return;
-    }
+    let sNotes = notes.filter(
+      (note) =>
+        (note?.title !== "Untitled" &&
+          improvedSearch(note?.title, searchValue)) ||
+        improvedSearch(note?.rawtext, searchValue)
+    );
+
+    setIsSearching(true);
+    setSearchedNotes(sNotes);
+    return;
 
     let searchednotes = [];
     for (let note of notes) {
       let text = note.rawtext;
+      const title = note.title;
+      if (title === "Untitled") {
+      }
       let words = text.split(" ");
 
       const len = searchValue.length;
