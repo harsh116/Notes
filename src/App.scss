@@ -4,6 +4,7 @@ html,
 body,
 #root,
 .App {
+  height: 100vh;
   height: 100%;
 }
 
@@ -11,6 +12,10 @@ body,
 .App {
   background-color: $greyshade;
   // margin: 1px;
+}
+
+.App {
+  // height: 100vh;
 }
 
 .App {

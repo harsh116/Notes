@@ -6,9 +6,11 @@ import CryptoJS from "crypto-js";
 
 import PasswordOverlay from "./PasswordOverlay";
 import ExpandedOptions from "./ExpandedOptions";
+import UploadImageOverlay from "./UploadImageOverlay";
 
 import { SOURCE, SINGLE_SOURCE } from "./constants";
 import { findNote } from "./helper";
+import { pasteHtmlAtCaret } from "./extras/uploadImage";
 
 const Editor = (props) => {
   const ref = useRef();
@@ -16,6 +18,9 @@ const Editor = (props) => {
   const [isoverlayActive, setIsoverlayActive] = useState(false);
   const [expandedOptionsVisibilityState, setExpandedOptionsVisibilityState] =
     useState(false);
+  // const [sel, setSel] = useState({});
+  const [range, setRange] = useState({});
+  const [html, setHtml] = useState("");
 
   // password, title
   const [overlayType, setOverlayType] = useState("");
@@ -32,7 +37,17 @@ const Editor = (props) => {
     setNotes,
     notes,
     deleteNote,
+    isBaseOverlayActive,
+    setIsBaseOverlayActive,
   } = props;
+
+  const storeRange = () => {
+    const sel = window.getSelection();
+    const r = sel.getRangeAt(0);
+    const rclone = r.cloneRange();
+
+    setRange(rclone);
+  };
 
   const [encryptionState, setEncryptionState] = useState("encrypt");
 
@@ -47,6 +62,14 @@ const Editor = (props) => {
       setExpandedOptionsVisibilityState(false);
     }
   }, [isEditorActive]);
+
+  useEffect(() => {
+    console.log("useeffect html: ", html);
+    if (html && html.length > 5) {
+      pasteHtmlAtCaret(html, null, range);
+      // setTimeout(() => {}, 1000);
+    }
+  }, [html]);
 
   const encrypt = (texto, pass) => {
     const encrypted = CryptoJS.AES.encrypt(texto, pass);
@@ -170,6 +193,8 @@ const Editor = (props) => {
   const handleChange = (e) => {
     setEditingNote({ ...editingNote, fmtext: e.target.value });
     setIsSaveEnabled(true);
+    // setSel(window.getSelection());
+    // setRange(window.getSelection().getRangeAt(0));
   };
 
   const close = () => {
@@ -228,9 +253,18 @@ const Editor = (props) => {
     setExpandedOptionsVisibilityState(false);
   };
 
+  const openUploadOption = () => {
+    setIsBaseOverlayActive(true);
+  };
+
   const optionarr = [
     { icon: "fa fa-trash", name: "Delete", onclickEvent: deleteFn },
     { icon: "fa-solid fa-file-export", name: "Export", onclickEvent: exp },
+    {
+      icon: "fa-solid fa-upload",
+      name: "Upload Image",
+      onclickEvent: openUploadOption,
+    },
   ];
 
   const heading = editingNote.title ? editingNote.title : "Untitled";
@@ -244,6 +278,19 @@ const Editor = (props) => {
   return (
     <div className={`EditorContainer ${isEditorActive ? "active" : ""}`}>
       <div className={`Editor ${isEditorActive ? "active" : ""}`}>
+        {isBaseOverlayActive ? (
+          <UploadImageOverlay
+            setIsBaseOverlayActive={setIsBaseOverlayActive}
+            setExpandedOptionsVisibilityState={
+              setExpandedOptionsVisibilityState
+            }
+            range={range}
+            setHtml={setHtml}
+          />
+        ) : (
+          ""
+        )}
+
         {isoverlayActive ? (
           <PasswordOverlay
             label={overlayType === "password" ? "Password" : "Title"}
@@ -316,6 +363,8 @@ const Editor = (props) => {
             html={editHTML}
             innerRef={ref}
             onChange={handleChange}
+            onClick={storeRange}
+            onKeyPress={storeRange}
           />
         </div>
         <ExpandedOptions

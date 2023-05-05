@@ -5,6 +5,7 @@ import Notes from "./Notes";
 import Editor from "./Editor";
 import Search from "./Search";
 import PasswordOverlay from "./PasswordOverlay";
+
 import { generate_token } from "./helper";
 import { SOURCE, SINGLE_SOURCE } from "./constants";
 
@@ -17,10 +18,13 @@ function App() {
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [editingNote, setEditingNote] = useState({});
   const [idgenerate, setIdgenerate] = useState(0);
+  const [html, setHtml] = useState("");
 
   const [isImportSingleNoteActive, setIsImportSingleNoteActive] =
     useState(false);
   const [isImportAllNoteActive, setIsImportAllNoteActive] = useState(false);
+
+  const [isBaseOverlayActive, setIsBaseOverlayActive] = useState(false);
 
   const deleteNote = (id) => {
     const updatedNotes = [...notes];
@@ -51,6 +55,8 @@ function App() {
       -o-filter: invert(${invertPercent}%);
       -ms-filter: invert(${invertPercent}%);
     }
+
+    
 
     
     img,video,iframe{
@@ -185,6 +191,7 @@ function App() {
         setEditingNote={setEditingNote}
         deleteNote={deleteNote}
       />
+
       {isImportSingleNoteActive ? (
         <PasswordOverlay
           isInputJSON={true}
@@ -249,6 +256,9 @@ function App() {
         notes={notes}
         setNotes={setNotes}
         deleteNote={deleteNote}
+        isBaseOverlayActive={isBaseOverlayActive}
+        setIsBaseOverlayActive={setIsBaseOverlayActive}
+        setHtml={setHtml}
       />
     </div>
   );
